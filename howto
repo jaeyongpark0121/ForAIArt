@@ -1,0 +1,36 @@
+학습 방법
+1. 이미지들을 하얀 배경의 1024 / 1024로 crop해서 준비. 약 30장 정도
+
+ㅡ kohya_ss
+2. 폴더 준비. {이름}_Style_v1 폴더.
+해당 폴더에는 'image', 'model', 'log' 폴더.
+
+image 폴더 안에 [반복횟수]_[트리거워드] 형식으로 새 폴더를 만듭니다.
+권장 예시: 40_myartstyle
+40: 이미지 한 장당 40번씩 반복해서 꼼꼼히 훑어보라는 시스템 명령어입니다.
+myartstyle: 나중에 WebUI에서 이 화풍을 불러올 때 프롬프트 창에 입력할 고유 비밀번호입니다. 다른 영단어와 겹치지 않는 고유명사를 쓰는 것이 좋습니다. >> lemyartstyle
+
+3. 학습 설정.
+문서 아이콘. stableDiffusion에  AnyLoRA_noVae_fp-pruned.safetensors 파일 선택
+Save precision : bf16
+TrainedModel output name : 임의 설정. Lemy_NPC_v2
+
+4. 파라미터 세팅
+Max Train steps : 0
+Epoch : 4
+Train batch size: 1
+Max resolution 512,512
+
+5. 학습.
+
+6. 학습된 모델 파일을 저장. Lemy_NPC_v1.safetensors 등으로 이름 바꿔 Models\Lora 내부에 집어넣기
+
+7. cehckpoint로 AnyLoRA 모델 선택, 해상도 512 * 512로 선택.
+
+8. 키워드 다음과 같이 설정 : 
+<lora:Lemy_NPC_v1:1.5>, lemyartstyle, 1girl, full body, standing, neutral pose, simple white background
+(worst quality, low quality:1.4), bad anatomy, extra digits, complex background, blurry
+
+9. 색감이 회색빛이라면?
+그림체 형태는 비슷한데 색감이 탁하고 회색빛이 돈다면, 그림체 반영이 안 된 것이 아니라 **VAE(색감 교정 필터)**가 빠져서 그렇습니다. 아까 다운로드하신 베이스 모델 이름이 AnyLoRA_noVae였기 때문입니다.
+조치: WebUI Forge 상단 메뉴 중 VAE / Text Encoder 칸이 비어있다면, 그곳을 클릭해 Automatic 대신 내장된 VAE(예: vae-ft-mse-840000-ema-pruned 등)를 선택해 주세요.
